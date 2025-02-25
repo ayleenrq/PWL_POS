@@ -20,6 +20,6 @@ class UserController extends Controller
 
         // Coba akses model UserModel
         $user = UserModel::all(); // Ambil semua data dari tabel m_user
-        return view('user', ['user' => $data]); // Kirim data ke view
+        return view('user', ['user' => $user]); // Kirim data ke view
     }
 }
