@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = UserModel::where('level_id', '1')->first(); // Ambil data user berdasarkan ID
+        $user = UserModel::firstWhere('level_id', 1); // Ambil data user berdasarkan ID
         return view('user', ['data' => $user]); // Kirim data ke view
     }
 }
