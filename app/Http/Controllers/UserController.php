@@ -12,11 +12,13 @@ class UserController extends Controller
     {
         /// Tambah data user dengan Eloquent Model
         $data = [
-            'nama' => 'Pelanggan Pertama',
+            'level_id' => 2,
+            'username' => 'manager_dua',
+            'nama' => 'Manager 2',
+            'password' => Hash::make('12345')
         ];
-
-        // Update data user dengan username 'customer-1'
-        UserModel::where('username', 'customer-1')->update($data);
+        /// Insert data ke tabel m_user dengan Eloquent Model
+        UserModel::create($data);
 
         // Coba akses model UserModel
         $user = UserModel::all(); // Ambil semua data dari tabel m_user
