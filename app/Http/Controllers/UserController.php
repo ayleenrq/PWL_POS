@@ -13,8 +13,8 @@ class UserController extends Controller
         /// Tambah data user dengan Eloquent Model
         $data = [
             'level_id' => 2,
-            'username' => 'manager_dua',
-            'nama' => 'Manager 2',
+            'username' => 'manager_tiga',
+            'nama' => 'Manager 3',
             'password' => Hash::make('12345')
         ];
         /// Insert data ke tabel m_user dengan Eloquent Model
