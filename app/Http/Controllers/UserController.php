@@ -25,6 +25,6 @@ class UserController extends Controller
         $user->wasChanged('username'); // true
         $user->wasChanged(['username', 'level_id']); // true
         $user->wasChanged('nama'); // false
-        $user->wasChanged(['nama', 'username']); // true
+        dd($user->wasChanged(['nama', 'username'])); // true
     }
 }
