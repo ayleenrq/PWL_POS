@@ -69,5 +69,28 @@ class UserController extends Controller
             'activeMenu' => $activeMenu
         ]);
     }
+    
+    // Menyimpan data user baru
+    public function store(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'username' => 'required|string|min:3|unique:m_user,username', // Username harus unik, minimal 3 karakter
+            'nama'     => 'required|string|max:100', // Nama harus diisi, berupa string, maksimal 100 karakter
+            'password' => 'required|min:5', // Password minimal 5 karakter
+            'level_id' => 'required|integer' // Level harus berupa angka dan wajib diisi
+        ]);
+
+        // Simpan data ke database
+        UserModel::create([
+            'username' => $request->username,
+            'nama'     => $request->nama,
+            'password' => bcrypt($request->password), // Enkripsi password sebelum disimpan
+            'level_id' => $request->level_id
+        ]);
+
+        // Redirect ke halaman user dengan pesan sukses
+        return redirect('/user')->with('success', 'Data user berhasil disimpan');
+    }
 
 }
