@@ -93,4 +93,33 @@ class UserController extends Controller
         return redirect('/user')->with('success', 'Data user berhasil disimpan');
     }
 
+    // Menampilkan detail user
+    public function show(string $id)
+    {
+        // Ambil data user berdasarkan ID dengan relasi level
+        $user = UserModel::with('level')->find($id);
+
+        // Jika user tidak ditemukan, tampilkan halaman 404
+        if (!$user) {
+            abort(404, 'User tidak ditemukan');
+        }
+
+        // Konfigurasi breadcrumb untuk navigasi
+        $breadcrumb = (object) [
+            'title' => 'Detail User',
+            'list'  => ['Home', 'User', 'Detail']
+        ];
+
+        // Konfigurasi judul halaman
+        $page = (object) [
+            'title' => 'Detail user'
+        ];
+
+        // Menentukan menu yang sedang aktif
+        $activeMenu = 'user';
+
+        // Mengembalikan tampilan dengan data yang sudah dikonfigurasi
+        return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+    }
+
 }
