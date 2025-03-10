@@ -122,4 +122,57 @@ class UserController extends Controller
         return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
     }
 
+    // Menampilkan halaman form edit user
+    public function edit(string $id)
+    {
+        // Ambil data user berdasarkan ID
+        $user = UserModel::findOrFail($id);
+
+        // Ambil semua data level untuk ditampilkan di form
+        $level = LevelModel::all();
+
+        // Konfigurasi breadcrumb untuk navigasi
+        $breadcrumb = (object) [
+            'title' => 'Edit User',
+            'list'  => ['Home', 'User', 'Edit']
+        ];
+
+        // Konfigurasi judul halaman
+        $page = (object) [
+            'title' => 'Edit user'
+        ];
+
+        // Menentukan menu yang sedang aktif
+        $activeMenu = 'user';
+
+        // Mengembalikan tampilan dengan data yang sudah dikonfigurasi
+        return view('user.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'level' => $level, 'activeMenu' => $activeMenu]);
+    }
+
+    // Menyimpan perubahan data user
+    public function update(Request $request, string $id)
+    {
+        // Validasi input dari request
+        $request->validate([
+            'username' => 'required|string|min:3|unique:m_user,username,' . $id . ',user_id',
+            'nama'     => 'required|string|max:100', 
+            'password' => 'nullable|min:5', 
+            'level_id' => 'required|integer'
+        ]);
+
+        // Ambil data user berdasarkan ID
+        $user = UserModel::findOrFail($id);
+
+        // Update data user
+        $user->update([
+            'username' => $request->username,
+            'nama'     => $request->nama,
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'level_id' => $request->level_id
+        ]);
+
+        // Redirect kembali ke halaman user dengan pesan sukses
+        return redirect('/user')->with('success', 'Data user berhasil diubah');
+    }
+
 }
