@@ -1,43 +1,75 @@
-@extends('layouts.app')
+@extends('layouts.template')
 
 @section('content')
-<div class="container">
-    <h2>Daftar Level</h2>
-    
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+  <div class="card card-outline card-primary"> 
+      <div class="card-header"> 
+        <h3 class="card-title">{{ $page->title }}</h3> 
+        <div class="card-tools"> 
+          <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a> 
+        </div> 
+      </div> 
+      <div class="card-body">
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-    <a href="{{ route('level.create') }}" class="btn btn-primary mb-3">Tambah Level Baru</a>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Kode Level</th>
-                <th>Nama Level</th>
-                <th>Created At</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($levels as $level)
-            <tr>
-                <td>{{ $level->level_kode }}</td>
-                <td>{{ $level->level_nama }}</td>
-                <td>{{ $level->created_at }}</td>
-                <td>
-                    <a href="{{ route('level.edit', $level->level_kode) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="{{ route('level.destroy', $level->level_kode) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_level">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+        </table>
+      </div>
+  </div>
 @endsection
+
+@push('css') 
+@endpush 
+
+@push('js') 
+<script> 
+    $(document).ready(function() { 
+      var dataLevel = $('#table_level').DataTable({ 
+          serverSide: true,      
+          ajax: { 
+              "url": "{{ url('level/list') }}", 
+              "dataType": "json", 
+              "type": "POST"
+          }, 
+          columns: [ 
+            { 
+              // nomor urut dari laravel datatable addIndexColumn() 
+              data: "DT_RowIndex",             
+              className: "text-center", 
+              orderable: false, 
+              searchable: false     
+            },{ 
+              data: "level_kode",                
+              className: "", 
+              orderable: true,     
+              searchable: true      
+            },{ 
+              // mengambil data level hasil dari ORM berelasi 
+              data: "level_nama",                    
+              className: "", 
+              orderable: false,     
+              searchable: false     
+            },{ 
+              data: "aksi",                
+              className: "", 
+              orderable: false,     
+              searchable: false     
+            } 
+          ] 
+      }); 
+      
+    }); 
+</script>
+@endpush
