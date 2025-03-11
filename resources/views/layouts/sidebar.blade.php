@@ -52,6 +52,13 @@ role="menu" data-accordion="false">
           <p>Data Barang</p> 
         </a> 
       </li> 
+      <li class="nav-item"> 
+        <a href="{{ url('/supplier') }}" class="nav-link {{ ($activeMenu == 'supplier')? 
+'active' : '' }} "> 
+          <i class="nav-icon fas fa-truck"></i>
+          <p>Data Supplier</p> 
+        </a> 
+      </li> 
       <li class="nav-header">Data Transaksi</li> 
       <li class="nav-item"> 
         <a href="{{ url('/stok') }}" class="nav-link {{ ($activeMenu == 'stok')? 
