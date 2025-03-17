@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
+use Illuminate\Support\Facades\Validator;
 
 /*
 |--------------------------------------------------------------------------
