@@ -50,7 +50,7 @@
   <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data
     backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true">
   </div> 
-  
+
 @endsection 
  
 @push('css') 
@@ -58,8 +58,15 @@
  
 @push('js') 
   <script> 
+    function modalAction(url = '') { 
+      $('#myModal').load(url, function() { 
+        $('#myModal').modal('show'); 
+      });
+    } 
+    
+    var dataUser;
     $(document).ready(function() { 
-      var dataUser = $('#table_user').DataTable({ 
+      dataUser = $('#table_user').DataTable({ 
            // serverSide: true, jika ingin menggunakan server side processing 
           serverSide: true,      
           ajax: { 
