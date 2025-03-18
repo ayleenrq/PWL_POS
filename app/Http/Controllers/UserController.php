@@ -312,11 +312,22 @@ class UserController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $user = UserModel::find($id);
             if ($user) {
-                $user->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+                try {
+                    // Menghapus data user berdasarkan ID
+                    UserModel::destroy($id);
+                    
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data user berhasil dihapus'
+                    ]);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    // Jika terjadi error ketika menghapus data,
+                    // redirect kembali ke halaman dengan pesan error
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Data user gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini'
+                    ]);
+                }
             } else {
                 return response()->json([
                     'status' => false,
@@ -324,7 +335,14 @@ class UserController extends Controller
                 ]);
             }
         }
-
         return redirect('/');
+    }
+
+    public function show_ajax(string $id)
+    {
+        $user = UserModel::with('level')->find($id);
+        
+        // Pass the user data to the view
+        return view('user.show_ajax', ['user' => $user]);
     }
 }
