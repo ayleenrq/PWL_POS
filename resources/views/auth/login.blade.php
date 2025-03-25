@@ -89,7 +89,7 @@
             $('#form-login').validate({
                 rules: {
                     username: {required: true, minlength: 4, maxlength: 20},
-                    password: {required: true, minlength: 6, maxlength: 20}
+                    password: {required: true, minlength: 5, maxlength: 20}
                 },
                 submitHandler: function (form) { // Ketika valid, maka bagian yang akan dijalankan
                     $.ajax({
