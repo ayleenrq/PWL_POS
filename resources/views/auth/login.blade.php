@@ -22,6 +22,13 @@
         <div class="card card-outline card-primary">
             <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a></div>
             <div class="card-body">
+                @if (session('success'))
+                    <div class="alert alert-success text-center">{{ session('success') }}</div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger text-center">{{ session('error') }}</div>
+                @endif
                 <p class="login-box-msg">Sign in to start your session</p>
                 <form action="{{ url('login') }}" method="post" id="form-login">
                     @csrf
@@ -57,6 +64,9 @@
                             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
                         <!-- /.col -->
+                    </div>
+                    <div class="text-center mt-4">
+                        <p>Don't have an account? <a href="{{ url('register') }}">Register</a></p>
                     </div>
                 </form>
             </div>

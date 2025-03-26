@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -301,6 +302,7 @@ class UserController extends Controller
     } 
 
     public function confirm_ajax(string $id){ 
+        // dd(Auth::user()->getAttributes());
         $user = UserModel::find($id);
 
         return view('user.confirm_ajax', ['user' => $user]);
@@ -313,8 +315,20 @@ class UserController extends Controller
             $user = UserModel::find($id);
             if ($user) {
                 try {
+                    // Cek apakah user yang dihapus adalah user yang sedang login
+                    if ($user->username == Auth::user()->username) {
+                        $logout = true;
+                    }
+
                     // Menghapus data user berdasarkan ID
                     UserModel::destroy($id);
+                    if($logout) {
+                        return response()->json([
+                            'status' => true,
+                            'logout' => true,
+                            'message' => 'Data user berhasil dihapus'
+                        ]);
+                    }
                     
                     return response()->json([
                         'status' => true,

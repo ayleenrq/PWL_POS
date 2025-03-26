@@ -58,7 +58,12 @@
                                     title: 'Berhasil', 
                                     text: response.message 
                                 }); 
-                                dataUser.ajax.reload(); 
+                                // Cek apakah user yang dihapus adalah user yang sedang login
+                                if (response.logout) {
+                                    window.location.href = "/logout"; // Redirect ke halaman logout
+                                } else {
+                                    dataUser.ajax.reload(); // Reload tabel jika bukan user yang sedang login
+                                } 
                             }else{ 
                                 $('.error-text').text(''); 
                                 $.each(response.msgField, function(prefix, val) { 
