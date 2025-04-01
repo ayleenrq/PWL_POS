@@ -8,6 +8,8 @@ use App\Models\BarangModel;
 use App\Models\KategoriModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use PhpOffice\PhpSpreadsheet\IOFactory; 
 
 class BarangController extends Controller
 {
@@ -30,10 +32,11 @@ class BarangController extends Controller
 
     public function list(Request $request)
     {
-        $barangs = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual', 'kategori_id')->with('kategori');
-
-        if ($request->kategori_id) {
-            $barangs->where('kategori_id', $request->kategori_id);
+        $barangs = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual', 'kategori_id')->with('kategori'); 
+ 
+        $kategori_id = $request->input('filter_kategori'); 
+        if(!empty($kategori_id)){ 
+            $barangs->where('kategori_id', $kategori_id); 
         }
 
         return DataTables::of($barangs)
@@ -340,5 +343,70 @@ class BarangController extends Controller
         
         // Pass the user data to the view
         return view('barang.show_ajax', ['barang' => $barang]);
+    }
+
+    public function import() 
+    { 
+        return view('barang.import'); 
+    }
+
+    public function import_ajax(Request $request) 
+    {
+        if($request->ajax() || $request->wantsJson()){ 
+            $rules = [ 
+                // validasi file harus xls atau xlsx, max 1MB 
+                'file_barang' => ['required', 'mimes:xlsx', 'max:1024'] 
+            ]; 
+ 
+            $validator = Validator::make($request->all(), $rules); 
+            if($validator->fails()){ 
+                return response()->json([ 
+                    'status' => false, 
+                    'message' => 'Validasi Gagal', 
+                    'msgField' => $validator->errors() 
+                ]); 
+            } 
+ 
+            $file = $request->file('file_barang');  // ambil file dari request 
+ 
+            $reader = IOFactory::createReader('Xlsx');  // load reader file excel 
+            $reader->setReadDataOnly(true);             // hanya membaca data 
+            $spreadsheet = $reader->load($file->getRealPath()); // load file excel 
+            $sheet = $spreadsheet->getActiveSheet();    // ambil sheet yang aktif 
+ 
+            $data = $sheet->toArray(null, false, true, true);   // ambil data excel 
+ 
+            $insert = []; 
+            if(count($data) > 1){ // jika data lebih dari 1 baris 
+                foreach ($data as $baris => $value) { 
+                    if($baris > 1){ // baris ke 1 adalah header, maka lewati 
+                        $insert[] = [ 
+                            'kategori_id' => $value['A'], 
+                            'barang_kode' => $value['B'], 
+                            'barang_nama' => $value['C'], 
+                            'harga_beli' => $value['D'], 
+                            'harga_jual' => $value['E'], 
+                            'created_at' => now(), 
+                        ]; 
+                    } 
+                } 
+ 
+                if(count($insert) > 0){ 
+                    // insert data ke database, jika data sudah ada, maka diabaikan 
+                    BarangModel::insertOrIgnore($insert);    
+                } 
+ 
+                return response()->json([ 
+                    'status' => true, 
+                    'message' => 'Data berhasil diimport' 
+                ]); 
+            }else{ 
+                return response()->json([ 
+                    'status' => false, 
+                    'message' => 'Tidak ada data yang diimport' 
+                ]); 
+            } 
+        } 
+        return redirect('/'); 
     }
 }
