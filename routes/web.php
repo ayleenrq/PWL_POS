@@ -103,6 +103,8 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']); // menampilkan halaman konfirmasi delete supplier ajax
             Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']); // menghapus data supplier ajax
             Route::delete('/{id}', [SupplierController::class, 'destroy']); // menghapus data supplier
+            Route::get('/import', [SupplierController::class, 'import']); // menampilkan halaman import supplier
+            Route::post('/import_ajax', [SupplierController::class, 'import_ajax']); // menyimpan data supplier baru
         });
     });
 

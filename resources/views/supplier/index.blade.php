@@ -2,12 +2,13 @@
 
 @section('content')
   <div class="card card-outline card-primary"> 
-      <div class="card-header"> 
-        <h3 class="card-title">{{ $page->title }}</h3> 
-        <div class="card-tools"> 
-          <a class="btn btn-sm btn-primary mt-1" href="{{ url('supplier/create') }}">Tambah</a> 
-          <button onclick="modalAction('{{ url('supplier/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
-        </div> 
+      <div class="card-header">
+        <h3 class="card-title">{{ $page->title }}</h3>
+        <div class="card-tools">
+            <button onclick="modalAction('{{ url('/supplier/import') }}')" class="btn btn-info">Import Supplier</button>
+            <a href="{{ url('/supplier/create') }}" class="btn btn-primary">Tambah Data</a>
+            <button onclick="modalAction('{{ url('/supplier/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
+        </div>
       </div> 
       <div class="card-body">
         @if (session('success'))
@@ -52,6 +53,7 @@
     $(document).ready(function() { 
       dataSupplier = $('#table_supplier').DataTable({ 
           serverSide: true,      
+          processing: true, 
           ajax: { 
               "url": "{{ url('supplier/list') }}", 
               "dataType": "json", 
@@ -62,26 +64,31 @@
               // nomor urut dari laravel datatable addIndexColumn() 
               data: "DT_RowIndex",             
               className: "text-center", 
+              width: "5%", 
               orderable: false, 
               searchable: false     
             },{ 
               data: "supplier_kode",                
               className: "", 
+              width: "20%", 
               orderable: true,     
               searchable: true      
             },{ 
               data: "supplier_nama",                    
               className: "", 
+              width: "20%", 
               orderable: false,     
               searchable: false     
             },{ 
               data: "supplier_alamat",                    
               className: "", 
+              width: "20%", 
               orderable: false,     
               searchable: false     
             },{ 
               data: "aksi",                
               className: "", 
+              width: "20%", 
               orderable: false,     
               searchable: false     
             } 
