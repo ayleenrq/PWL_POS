@@ -37,6 +37,8 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']); // menampilkan halaman konfirmasi delete user ajax
             Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']); // menghapus data user ajax
             Route::delete('/{id}', [UserController::class, 'destroy']); // menghapus data user
+            Route::get('/import', [UserController::class, 'import']); // menampilkan halaman import user
+            Route::post('/import_ajax', [UserController::class, 'import_ajax']); // menyimpan data user baru
         });
     });
 
