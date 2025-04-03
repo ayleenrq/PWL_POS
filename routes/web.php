@@ -85,6 +85,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::delete('/{id}', [KategoriController::class, 'destroy']); // menghapus data kategori
             Route::get('/import', [KategoriController::class, 'import']); // menampilkan halaman import kategori
             Route::post('/import_ajax', [KategoriController::class, 'import_ajax']); // menyimpan data kategori baru
+            Route::get('/export_excel', [KategoriController::class, 'export_excel']); // menampilkan halaman export kategori
         });
     });
 
