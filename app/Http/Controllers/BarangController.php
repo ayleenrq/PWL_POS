@@ -417,5 +417,19 @@ class BarangController extends Controller
         ->orderBy('kategori_id')
         ->with('kategori')
         ->get();
+
+        //load library excel
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();  // ambil sheet yang aktif
+
+        // tulis header
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Kategori');
+        $sheet->setCellValue('C1', 'Kode Barang');
+        $sheet->setCellValue('D1', 'Nama Barang');
+        $sheet->setCellValue('E1', 'Harga Beli');
+        $sheet->setCellValue('F1', 'Harga Jual');
+
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true);  // bold header
     }
 }
