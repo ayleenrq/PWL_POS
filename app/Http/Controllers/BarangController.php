@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use PhpOffice\PhpSpreadsheet\IOFactory; 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class BarangController extends Controller
 {
@@ -431,5 +432,19 @@ class BarangController extends Controller
         $sheet->setCellValue('F1', 'Harga Jual');
 
         $sheet->getStyle('A1:F1')->getFont()->setBold(true);  // bold header
+
+        $no = 1;        // nomor data dimulai dari 1
+        $baris = 2;     // baris data dimulai dari baris ke 2
+
+        foreach ($barang as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $value->kategori->kategori_nama);
+            $sheet->setCellValue('C' . $baris, $value->barang_kode);
+            $sheet->setCellValue('D' . $baris, $value->barang_nama);
+            $sheet->setCellValue('E' . $baris, $value->harga_beli);
+            $sheet->setCellValue('F' . $baris, $value->harga_jual);
+            $baris++;
+            $no++;
+        }
     }
 }
