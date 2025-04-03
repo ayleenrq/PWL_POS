@@ -108,6 +108,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::delete('/{id}', [SupplierController::class, 'destroy']); // menghapus data supplier
             Route::get('/import', [SupplierController::class, 'import']); // menampilkan halaman import supplier
             Route::post('/import_ajax', [SupplierController::class, 'import_ajax']); // menyimpan data supplier baru
+            Route::get('/export_excel', [SupplierController::class, 'export_excel']); // menampilkan halaman export supplier
         });
     });
 
