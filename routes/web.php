@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::delete('/{id}', [LevelController::class, 'destroy']); // menghapus data level
             Route::get('/import', [LevelController::class, 'import']); // menampilkan halaman import level
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']); // menyimpan data level baru
+            Route::get('/export_excel', [LevelController::class, 'export_excel']); // menampilkan halaman export level
         });
     });
 
