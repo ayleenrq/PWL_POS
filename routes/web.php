@@ -132,6 +132,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::get('/import', [BarangController::class, 'import']); // menampilkan halaman import barang
             Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // menyimpan data barang baru
             Route::get('/export_excel', [BarangController::class, 'export_excel']); // menampilkan halaman export barang
+            Route::get('/export_pdf', [BarangController::class, 'export_pdf']); // export pdf
         });
     });
 });
