@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::get('/import', [UserController::class, 'import']); // menampilkan halaman import user
             Route::post('/import_ajax', [UserController::class, 'import_ajax']); // menyimpan data user baru
             Route::get('/export_excel', [UserController::class, 'export_excel']); // menampilkan halaman export user
+            Route::get('/export_pdf', [UserController::class, 'export_pdf']); // export pdf
         });
     });
 
