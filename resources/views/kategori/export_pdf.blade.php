@@ -58,7 +58,7 @@
         span.font-bold{ 
             font-weight: bold; 
             margin-bottom: 2px; 
-        }
+        } 
     </style> 
 </head> 
 <body> 
@@ -75,21 +75,21 @@
         </tr> 
     </table> 
  
-    <h3 class="text-center">LAPORAN DATA LEVEL</h4> 
+    <h3 class="text-center">LAPORAN DATA KATEGORI</h4> 
     <table class="border-all"> 
         <thead> 
             <tr> 
                 <th class="text-center">No</th> 
-                <th>Kode Level</th> 
-                <th>Nama Level</th> 
+                <th>Kode Kategori</th> 
+                <th>Nama Kategori</th> 
             </tr> 
         </thead> 
         <tbody> 
-            @foreach($level as $l) 
+            @foreach($kategoris as $k) 
             <tr> 
                 <td class="text-center">{{ $loop->iteration }}</td> 
-                <td>{{ $l->level_kode }}</td> 
-                <td>{{ $l->level_nama }}</td> 
+                <td>{{ $k->kategori_kode }}</td> 
+                <td>{{ $k->kategori_nama }}</td> 
             </tr> 
             @endforeach 
         </tbody> 

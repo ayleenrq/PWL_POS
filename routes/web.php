@@ -88,6 +88,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::get('/import', [KategoriController::class, 'import']); // menampilkan halaman import kategori
             Route::post('/import_ajax', [KategoriController::class, 'import_ajax']); // menyimpan data kategori baru
             Route::get('/export_excel', [KategoriController::class, 'export_excel']); // menampilkan halaman export kategori
+            Route::get('/export_pdf', [KategoriController::class, 'export_pdf']); // export pdf
         });
     });
 
