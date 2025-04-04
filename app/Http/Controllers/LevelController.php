@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use PhpOffice\PhpSpreadsheet\IOFactory; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LevelController extends Controller
 {
@@ -429,4 +430,19 @@ class LevelController extends Controller
         $writer->save('php://output');
         exit;
     } // end function export_excel
+
+    public function export_pdf()
+    {
+        $level = LevelModel::select('level_id', 'level_kode', 'level_nama')
+            ->orderBy('level_id')
+            ->get();
+
+        // use Barryvdh\DomPDF\Facade\Pdf;
+        $pdf = Pdf::loadView('level.export_pdf', ['level' => $level]);
+        $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        $pdf->render();
+
+        return $pdf->stream('Data Level ' . date('Y-m-d H:i:s') . '.pdf');
+    }
 }
