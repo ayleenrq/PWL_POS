@@ -8,6 +8,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 Route::pattern('id', '[0-9]+'); // artinya ketika ada parameter {id}, maka harus berupa angka
 
@@ -19,6 +20,9 @@ Route::post('register', [AuthController::class, 'PostRegister']);
 
 Route::middleware(['auth'])->group(function () { // artinya semua route di dalam group ini harus login dulu
     Route::get('/', [WelcomeController::class, 'index']);
+    Route::get('/change-photo', [ProfileController::class, 'changePhoto'])->name('change-photo');
+    Route::post('/update-photo', [ProfileController::class, 'updatePhoto'])->name('update-photo');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::group(['prefix' => 'user'], function () {
         Route::middleware(['authorize:ADM'])->group(function () {

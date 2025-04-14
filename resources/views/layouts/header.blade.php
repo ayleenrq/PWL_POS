@@ -131,5 +131,31 @@
           <i class="fas fa-th-large"></i>
         </a>
       </li>
+      <!-- Profile Dropdown Menu -->
+      <li class="nav-item dropdown">
+          <a class="nav-link" href="#" data-toggle="dropdown">
+              <img src="{{ asset('storage/profile/' . (Auth::user()->profile_picture ?? 'user.png')) }}" 
+                  class="img-circle" 
+                  alt="User Image" 
+                  style="width: 22px; height: 22px; display: block; margin: auto;">
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg">
+              <span class="name-user" style="text-align: center; margin: 5px 0; display: block; font-size: 17px; color: #666;">
+                  {{ Auth::user()->nama }}
+              </span>
+              <div class="dropdown-divider"></div>
+              <a href="{{ url('/change-photo') }}" class="dropdown-item">
+                  <i class="fas fa-upload mr-2"></i>Change Photo Profile
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item">
+                  <i class="fas fa-user mr-2"></i>Manage Account
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="{{ url('/logout') }}" class="dropdown-item" style="color: red;">
+                  <i class="fas fa-sign-out-alt mr-2"></i>Logout
+              </a>
+          </div>
+      </li>
     </ul>
   </nav>
