@@ -311,9 +311,8 @@ class KategoriController extends Controller
                 foreach ($data as $baris => $value) { 
                     if($baris > 1){ // baris ke 1 adalah header, maka lewati 
                         $insert[] = [ 
-                            'kategori_id' => $value['A'], 
-                            'kategori_kode' => $value['B'], 
-                            'kategori_nama' => $value['C'], 
+                            'kategori_kode' => $value['A'], 
+                            'kategori_nama' => $value['B'], 
                             'created_at' => now(), 
                         ]; 
                     } 

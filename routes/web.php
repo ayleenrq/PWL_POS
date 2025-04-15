@@ -22,6 +22,8 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [WelcomeController::class, 'index']);
     Route::get('/change-photo', [ProfileController::class, 'changePhoto'])->name('change-photo');
     Route::post('/update-photo', [ProfileController::class, 'updatePhoto'])->name('update-photo');
+    Route::get('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
+    Route::post('/update-profile', [ProfileController::class, 'updateProfilePost']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::group(['prefix' => 'user'], function () {

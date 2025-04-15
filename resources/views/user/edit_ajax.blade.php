@@ -38,7 +38,7 @@
                     </select> 
                     <small id="error-level_id" class="error-text form-text text-danger"></small> 
                 </div> 
-                <div class="form-group"> 
+             <div class="form-group"> 
                     <label>Username</label> 
                     <input value="{{ $user->username }}" type="text" name="username" id="username" class="form-control" required> 
                     <small id="error-username" class="error-text form-text text-danger"></small> 

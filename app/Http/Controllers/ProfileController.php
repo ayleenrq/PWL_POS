@@ -61,4 +61,42 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'Foto profil berhasil diperbarui.');
     }
+
+    public function updateProfile()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Profile',
+            'list'  => ['Home', 'Profile']
+        ];
+
+        $page = (object) [  
+            'title' => 'Profile'
+        ];
+
+        $activeMenu = 'profile';
+        
+        return view('profile.update-profile', compact('breadcrumb', 'page', 'activeMenu'));
+    }
+
+    public function updateProfilePost(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'level_id' => 'required|integer',
+            'username' => 'required|string|min:3|unique:m_user,username,' . $user->user_id . ',user_id',
+            'nama' => 'required|string|max:100',
+            'password' => 'nullable|min:5'
+        ]);
+
+        $user->level_id = $request->level_id;
+        $user->username = $request->username;
+        $user->nama = $request->nama;
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile berhasil diperbarui.');
+    }
 }
