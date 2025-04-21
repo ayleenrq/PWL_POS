@@ -106,7 +106,7 @@ class UserController extends Controller
         UserModel::create([
             'username' => $request->username,
             'nama'     => $request->nama,
-            'password' => bcrypt($request->password), // Enkripsi password sebelum disimpan
+            'password' => Hash::make($request->password), // Enkripsi password sebelum disimpan
             'level_id' => $request->level_id
         ]);
 
@@ -232,7 +232,7 @@ class UserController extends Controller
                 'level_id' => 'required|integer', 
                 'username' => 'required|string|min:3|unique:m_user,username', 
                 'nama'     => 'required|string|max:100', 
-                'password' => 'required|min:6' 
+                'password' => 'required|min:5' 
             ]; 
     
             // use Illuminate\Support\Facades\Validator;
