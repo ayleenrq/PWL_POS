@@ -47,6 +47,16 @@ class StokController extends Controller
 
         return DataTables::of($riwayatstoks)
             ->addIndexColumn()
+            ->addColumn('aksi', function ($riwayatStok) {
+                $btn  = '<button onclick="modalAction(\''.url('/stok/' . $riwayatStok->riwayat_stok_id . '/show_ajax').'\')" 
+                class="btn btn-info btn-sm">Detail</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/stok/' . $riwayatStok->riwayat_stok_id . '/edit_ajax').'\')" 
+                class="btn btn-warning btn-sm">Edit</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/stok/' . $riwayatStok->riwayat_stok_id . '/delete_ajax').'\')"  
+                class="btn btn-danger btn-sm">Hapus</button> '; 
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
@@ -110,6 +120,126 @@ class StokController extends Controller
         }
 
         return redirect('/');
+    }
+
+    public function show_ajax(string $id)
+    {
+        $riwayatstok = RiwayatStokModel::with('barang', 'supplier', 'user')->find($id);
+        
+        // Pass the user data to the view
+        return view('stok.show_ajax', ['riwayatstok' => $riwayatstok]);
+    }
+
+    public function edit_ajax(string $id)
+    {
+        $riwayatstok = RiwayatStokModel::with('barang', 'supplier', 'user')->find($id);
+
+        if(!$riwayatstok){
+            return response()->json(['status' => false, 'message' => 'Data tidak ditemukan.']);
+        }
+
+        $suppliers = SupplierModel::select('supplier_id', 'supplier_nama')->get();
+        $barangs = BarangModel::select('barang_id', 'barang_nama')->get();
+
+        return view('stok.edit_ajax', ['riwayatstok' => $riwayatstok, 'suppliers' => $suppliers, 'barangs' => $barangs]);
+    }
+
+    public function update_ajax(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'barang_id' => 'required|integer|exists:m_barang,barang_id',
+                'supplier_id' => 'required|integer|exists:m_supplier,supplier_id',
+                'stok_jumlah' => 'required|integer|min:1'
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $riwayat = RiwayatStokModel::find($id);
+
+            if ($riwayat) {
+                $riwayat->update([
+                    'barang_id' => $request->barang_id,
+                    'supplier_id' => $request->supplier_id,
+                    'stok_jumlah' => $request->stok_jumlah,
+                    'user_id' => Auth::id(),
+                    'tanggal' => now()->setTimezone('Asia/Jakarta')
+                ]);
+
+                return response()->json(['status' => true, 'message' => 'Data berhasil diupdate']);
+            } else {
+                return response()->json(['status' => false, 'message' => 'Data tidak ditemukan']);
+            }
+        }
+        return redirect('/');
+    }
+
+    public function destroy(string $id)
+    {
+           // Mengecek apakah data barang dengan ID yang dimaksud ada atau tidak
+        $check = RiwayatStokModel::find($id);
+        if (!$check) {
+            return redirect('/stok')->with('error', 'Data stok tidak ditemukan');
+        }
+
+        try {
+            // Menghapus data barang berdasarkan ID
+            RiwayatStokModel::destroy($id);
+
+            return redirect('/stok')->with('success', 'Data stok berhasil dihapus');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Jika terjadi error ketika menghapus data,
+            // redirect kembali ke halaman dengan pesan error
+            return redirect('/stok')->with('error', 'Data stok gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
+        }
+    }
+
+    public function delete_ajax(Request $request, $id) 
+    {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $riwayat = RiwayatStokModel::find($id);
+            if ($riwayat) {
+                try {
+                    // Menghapus data barang berdasarkan ID
+                    RiwayatStokModel::destroy($id);
+                    
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data stok berhasil dihapus'
+                    ]);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    // Jika terjadi error ketika menghapus data,
+                    // redirect kembali ke halaman dengan pesan error
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Data stok gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
+    public function confirm_ajax(string $id){ 
+        $riwayat = RiwayatStokModel::find($id);
+        if ($riwayat) {
+            return view('stok.confirm_ajax', ['riwayat' => $riwayat]);
+        }
+        return redirect('/stok');
     }
 
     public function import() 

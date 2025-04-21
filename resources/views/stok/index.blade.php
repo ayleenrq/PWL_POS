@@ -41,6 +41,7 @@
                     <th>Supplier</th>
                     <th>User</th>
                     <th>Stok</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>
@@ -81,7 +82,8 @@
           {data: 'barang.barang_nama'},
           {data: 'supplier.supplier_nama'},
           {data: 'user.nama'},
-          {data: 'stok_jumlah'}
+          {data: 'stok_jumlah'},
+          {data: 'aksi'}
         ]
       });
     }); 
