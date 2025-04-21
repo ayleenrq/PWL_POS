@@ -23,7 +23,7 @@ class SupplierController extends Controller
         ];
 
         $page = (object) [  
-            'title' => 'Daftar supplier yang terdaftar dalam sistem'
+            'title' => 'Daftar supplier'
         ];
 
         $activeMenu = 'supplier'; // set menu yang sedang aktif

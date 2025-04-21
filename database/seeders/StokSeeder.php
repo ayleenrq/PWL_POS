@@ -17,10 +17,7 @@ class StokSeeder extends Seeder
         for ($i = 1; $i <= 15; $i++) {
             $data[] = [
                 'stok_id' => $i,
-                'supplier_id' => ($i % 3) + 1,
                 'barang_id' => $i,
-                'user_id' => 1,
-                'stok_tanggal' => now(),
                 'stok_jumlah' => rand(10, 50),
             ];
         }

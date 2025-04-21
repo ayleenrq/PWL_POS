@@ -9,6 +9,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StokController;
 
 Route::pattern('id', '[0-9]+'); // artinya ketika ada parameter {id}, maka harus berupa angka
 
@@ -143,6 +144,19 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // menyimpan data barang baru
             Route::get('/export_excel', [BarangController::class, 'export_excel']); // menampilkan halaman export barang
             Route::get('/export_pdf', [BarangController::class, 'export_pdf']); // export pdf
+        });
+    });
+
+    Route::group(['prefix' => 'stok'], function () {
+        Route::middleware(['authorize:ADM,MNG'])->group(function () {
+            Route::get('/', [StokController::class, 'index']);          // menampilkan halaman awal stok
+            Route::post('/riwayat', [StokController::class, 'riwayatStok']);      // menampilkan data stok dalam bentuk json untuk datatables
+            Route::get('/create_ajax', [StokController::class, 'create_ajax']);   // menampilkan halaman form tambah stok
+            Route::post('/ajax', [StokController::class, 'store_ajax']); // menyimpan data stok baru ajax
+            Route::get('/import', [StokController::class, 'import']); // menampilkan halaman import stok
+            Route::post('/import_ajax', [StokController::class, 'import_ajax']); // menyimpan data stok baru
+            Route::get('/export_excel', [StokController::class, 'export_excel']); // menampilkan halaman export stok
+            Route::get('/export_pdf', [StokController::class, 'export_pdf']); // export pdf
         });
     });
 });

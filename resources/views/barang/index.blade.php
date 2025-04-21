@@ -101,7 +101,7 @@
             },{
                 data: "barang_nama",
                 className: "",
-                width: "35%",
+                width: "25%",
                 orderable: true,
                 searchable: true
             },{

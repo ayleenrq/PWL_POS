@@ -11,23 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_stok', function (Blueprint $table) {
-            $table->id('stok_id');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('barang_id');
-            $table->unsignedBigInteger('user_id');
-            $table->datetime('stok_tanggal');
+        Schema::create('t_riwayat_stok', function (Blueprint $table) {
+            $table->id('riwayat_stok_id');
+            $table->timestamp('tanggal')->useCurrent();
+            $table->unsignedBigInteger('barang_id')->index();
+            $table->unsignedBigInteger('supplier_id')->index();
+            $table->unsignedBigInteger('user_id')->index();
             $table->integer('stok_jumlah');
             $table->timestamps();
-
-            // Mendefinisikan Foreign Key pada kolom supplier_id mengacu pada kolom supplier_id di tabel m_supplier
-            $table->foreign('supplier_id')->references('supplier_id')->on('m_supplier');    
 
             // Mendefinisikan Foreign Key pada kolom barang_id mengacu pada kolom barang_id di tabel m_barang
             $table->foreign('barang_id')->references('barang_id')->on('m_barang');
 
-            // Mendefinisikan Foreign Key pada kolom user_id mengacu pada kolom user_id di tabel m_user
+            // Mendefinisikan Foreign Key pada kolom user_id mengacu pada kolom user_id di tabel users
             $table->foreign('user_id')->references('user_id')->on('m_user');
+
+            // Mendefinisikan Foreign Key pada kolom supplier_id mengacu pada kolom supplier_id di tabel m_supplier
+            $table->foreign('supplier_id')->references('supplier_id')->on('m_supplier');
         });
     }
 
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('t_stok');
+        Schema::dropIfExists('t_riwayat_stok');
     }
 };
