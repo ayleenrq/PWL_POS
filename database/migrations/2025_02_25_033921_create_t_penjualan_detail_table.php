@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('barang_id')->index();
             $table->integer('harga');
             $table->integer('jumlah');
+            $table->integer('total');
             $table->timestamps();
 
             // Mendefinisikan Foreign Key pada kolom penjualan_id mengacu pada kolom penjualan_id di tabel t_penjualan
