@@ -81,6 +81,8 @@
                                     icon: 'success', 
                                     title: 'Berhasil', 
                                     text: response.message 
+                                }).then(function() {
+                                    location.reload();   // 🔥 reload halaman setelah user klik OK
                                 }); 
                                 dataStok.ajax.reload(); 
                             }else{ 

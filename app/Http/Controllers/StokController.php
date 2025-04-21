@@ -166,6 +166,17 @@ class StokController extends Controller
             $riwayat = RiwayatStokModel::find($id);
 
             if ($riwayat) {
+                $stok = StokModel::where('barang_id', $riwayat->barang_id)->first();
+
+                if ($stok) {
+                    // hitung perubahan stok
+                    $stok->stok_jumlah = $stok->stok_jumlah - $riwayat->stok_jumlah + $request->stok_jumlah;
+                    // pastikan tidak minus
+                    $stok->stok_jumlah = max($stok->stok_jumlah, 0);
+                    $stok->save();
+                }
+
+                // update data riwayat stok
                 $riwayat->update([
                     'barang_id' => $request->barang_id,
                     'supplier_id' => $request->supplier_id,
@@ -181,53 +192,48 @@ class StokController extends Controller
         }
         return redirect('/');
     }
-
-    public function destroy(string $id)
-    {
-           // Mengecek apakah data barang dengan ID yang dimaksud ada atau tidak
-        $check = RiwayatStokModel::find($id);
-        if (!$check) {
-            return redirect('/stok')->with('error', 'Data stok tidak ditemukan');
-        }
-
-        try {
-            // Menghapus data barang berdasarkan ID
-            RiwayatStokModel::destroy($id);
-
-            return redirect('/stok')->with('success', 'Data stok berhasil dihapus');
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Jika terjadi error ketika menghapus data,
-            // redirect kembali ke halaman dengan pesan error
-            return redirect('/stok')->with('error', 'Data stok gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
-        }
-    }
-
+    
     public function delete_ajax(Request $request, $id) 
     {
-        // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $riwayat = RiwayatStokModel::find($id);
+
             if ($riwayat) {
+                DB::beginTransaction();
                 try {
-                    // Menghapus data barang berdasarkan ID
-                    RiwayatStokModel::destroy($id);
-                    
+                    $stok = StokModel::where('barang_id', $riwayat->barang_id)->first();
+
+                    if ($stok) {
+                        $stok->stok_jumlah = $stok->stok_jumlah - $riwayat->stok_jumlah;
+
+                        if ($stok->stok_jumlah <= 0) {
+                            $stok->delete();  // hapus data dari stok jika stok 0 atau minus
+                        } else {
+                            $stok->save();    // kalau masih ada stok, simpan perubahan
+                        }
+                    }
+
+                    $riwayat->delete();  // hapus data riwayat
+
+                    DB::commit();
+
                     return response()->json([
                         'status' => true,
-                        'message' => 'Data stok berhasil dihapus'
+                        'message' => 'Data stok berhasil dihapus.'
                     ]);
-                } catch (\Illuminate\Database\QueryException $e) {
-                    // Jika terjadi error ketika menghapus data,
-                    // redirect kembali ke halaman dengan pesan error
+
+                } catch (\Exception $e) {
+                    DB::rollBack();
+
                     return response()->json([
                         'status' => false,
-                        'message' => 'Data stok gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini'
+                        'message' => 'Terjadi kesalahan saat menghapus data.'
                     ]);
                 }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Data tidak ditemukan.'
                 ]);
             }
         }

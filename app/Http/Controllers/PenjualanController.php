@@ -426,8 +426,9 @@ class PenjualanController extends Controller
     public function print_struk(string $id)
     {
         $penjualan = PenjualanModel::with('user', 'penjualanDetail.barang')->find($id);
-        $detail_penjualan = PenjualanDetailModel::with('penjualan')->where('penjualan_id', $id)->get();
 
-        return view('penjualan.print_struk', ['penjualan' => $penjualan, 'detail_penjualan' => $detail_penjualan[0]]);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('penjualan.print_struk', compact('penjualan'));
+        $pdf->setPaper([0,0,226.77,600], 'portrait');  // ukuran nota 8.5x21cm (seperti struk)
+        return $pdf->download('struk_penjualan_'.$penjualan->penjualan_kode.'.pdf');
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
   <div class="row">
   @foreach ($stoks as $stok)
-    <div class="col-4 col-sm-4 col-md-2">
+    <div class="col-4 col-sm-4 col-md-3">
       <div class="info-box mb-3" style="border-radius: 10px;">
         <div class="info-box-content">
           <span class="info-box-text" style="color:rgb(63, 63, 63)">{{ $stok->barang->barang_nama }}</span>

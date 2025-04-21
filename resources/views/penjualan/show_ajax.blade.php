@@ -36,7 +36,7 @@
             </table> 
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Kembali</button>
-                <a href="{{ url('/penjualan/print_struk') }}" target="_blank" class="btn btn-primary">Cetak Struk</a>
+                <a href="{{ url('/penjualan/' . $detail_penjualan->penjualan_id . '/print_struk') }}" class="btn btn-primary">Cetak Struk</a>
             </div>
         </div> 
     </div> 

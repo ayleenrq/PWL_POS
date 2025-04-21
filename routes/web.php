@@ -181,7 +181,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
             Route::post('/import_ajax', [PenjualanController::class, 'import_ajax']); // menyimpan data penjualan baru
             Route::get('/export_excel', [PenjualanController::class, 'export_excel']); // menampilkan halaman export penjualan
             Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']); // export pdf
-            Route::get('/print_struk', [PenjualanController::class, 'print_struk']); // export pdf
+            Route::get('/{id}/print_struk', [PenjualanController::class, 'print_struk']);
         });
     });
 });
