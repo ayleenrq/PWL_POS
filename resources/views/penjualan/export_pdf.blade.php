@@ -74,39 +74,57 @@
             </td> 
         </tr> 
     </table> 
- 
-    <h3 class="text-center">LAPORAN DATA PENJUALAN</h4> 
-    <table class="border-all"> 
-        <thead> 
-            <tr> 
-                <th class="text-center">No</th> 
-                <th>Kode Penjualan</th> 
-                <th>Tanggal/Waktu</th> 
-                <th>Kasir</th> 
-                <th>Pembeli</th> 
-                <th>Barang</th> 
-                <th class="text-right">Harga</th> 
-                <th class="text-center">Jumlah</th> 
-                <th class="text-right">Total</th> 
-            </tr> 
-        </thead> 
-        <tbody> 
-        @foreach($penjualans as $p)
-            @foreach($p->penjualanDetail as $detail)
-                <tr>
-                    <td class="text-center">{{ $loop->parent->iteration }}</td> 
-                    <td>{{ $p->penjualan_kode }}</td>
-                    <td>{{ $p->penjualan_tanggal }}</td>
-                    <td>{{ $p->user->nama ?? 'User Tidak Ditemukan' }}</td>
-                    <td>{{ $p->pembeli }}</td>
-                    <td>{{ $detail->barang->barang_nama ?? 'Barang Tidak Ditemukan' }}</td>
-                    <td class="text-right">{{ number_format($detail->harga, 0, ',', '.') }}</td>
-                    <td class="text-center">{{ $detail->jumlah }}</td>
-                    <td class="text-right">{{ number_format($detail->total, 0, ',', '.') }}</td>
-                </tr>
+
+    <h3 class="text-center">LAPORAN DATA PENJUALAN</h3>
+
+    <table class="border-all">
+        <thead>
+            <tr>
+                <th class="text-center">No</th>
+                <th>Kode Penjualan</th>
+                <th>Tanggal Penjualan</th>
+                <th>Pembeli</th>
+                <th class="text-right">Total Pembayaran</th>
+                <th class="text-center">Detail Penjualan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($penjualan as $p)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td>{{ $p->penjualan_kode }}</td>
+                <td>{{ \Carbon\Carbon::parse($p->penjualan_tanggal)->format('d-m-Y') }}</td>
+                <td>{{ $p->pembeli }}</td>
+                <td class="text-right">
+                    {{ number_format($p->penjualan_detail->sum(fn($item) => $item->harga * $item->jumlah), 0, ',', '.') }}
+                </td>
+                <td class="text-center">
+                    <table class="border-all">
+                        <thead>
+                            <tr>
+                                <th>Kode Barang</th>
+                                <th>Nama Barang</th>
+                                <th class="text-right">Harga</th>
+                                <th class="text-right">Jumlah</th>
+                                <th class="text-right">Sub Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($p->penjualan_detail as $detail)
+                            <tr>
+                                <td>{{ $detail->barang->barang_kode }}</td>
+                                <td>{{ $detail->barang->barang_nama }}</td>
+                                <td class="text-right">{{ number_format($detail->harga, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ $detail->jumlah }}</td>
+                                <td class="text-right">{{ number_format($detail->harga * $detail->jumlah, 0, ',', '.') }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             @endforeach
-        @endforeach
-        </tbody> 
-    </table> 
-</body> 
+        </tbody>
+    </table>
+</body>
 </html>

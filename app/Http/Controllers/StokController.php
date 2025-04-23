@@ -31,9 +31,10 @@ class StokController extends Controller
         $activeMenu = 'stok'; // set menu yang sedang aktif
 
         $stoks = StokModel::select('stok_id', 'barang_id', 'stok_jumlah')->with('barang')->get();
-        // dd($stoks->get()); 
-
-        return view('stok.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'stoks' => $stoks]);
+        
+        $barang = BarangModel::all();
+        
+        return view('stok.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'stoks' => $stoks, 'barang' => $barang]);
     }
 
     public function riwayatStok(Request $request)

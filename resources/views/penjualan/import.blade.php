@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Download Template</label>
+                    <label>Download Temp
                     <a href="{{ asset('template_penjualan.xlsx') }}" class="btn btn-info btn-sm" download>
                         <i class="fa fa-file-excel"></i> Download
                     </a>

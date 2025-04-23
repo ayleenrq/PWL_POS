@@ -28,7 +28,7 @@
               </span>
               <div class="dropdown-divider"></div>
               <a href="{{ url('/change-photo') }}" class="dropdown-item">
-                  <i class="fas fa-user mr-2"></i>Manage Account
+                  <i class="fas fa-user mr-2"></i>Profile
               </a>
               <div class="dropdown-divider"></div>
               <a href="{{ url('/logout') }}" class="dropdown-item" style="color: red;">

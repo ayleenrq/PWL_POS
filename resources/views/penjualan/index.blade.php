@@ -5,13 +5,31 @@
       <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <button onclick="modalAction('{{ url('/penjualan/import') }}')" class="btn btn-info">Import Penjualan</button>
             <a href="{{ url('/penjualan/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Penjualan</a>
             <a href="{{ url('/penjualan/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export Penjualan</a>
             <button onclick="modalAction('{{ url('/penjualan/create_ajax') }}')" class="btn btn-success">Buat Penjualan</button>
         </div>
       </div> 
       <div class="card-body">
+        <!-- untuk filter kasir/user -->
+        <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-sm row text-sm mb-0">
+                        <label for="filter_date" class="col-md-1 col-form-label">Filter</label>
+                        <div class="col-md-3">
+                            <select name="filter_user" class="form-control form-control-sm filter_user">
+                                <option value="">-- Semua --</option>
+                                @foreach($user as $i)
+                                    <option value="{{ $i->user_id }}">{{ $i->nama }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">Kasir</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
@@ -52,55 +70,54 @@
 
     var tablePenjualan;
     $(document).ready(function(){
-        tablePenjualan = $('#table_penjualan').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                "url": "{{ url('/penjualan/list') }}",
-                "dataType": "json",
-                "type": "POST",
-                "data": function (d) {
-                    d._token = '{{ csrf_token() }}';
-                }
-            },
-            columns: [{
-                data: "penjualan_id",
-                className: "text-center",
-                orderable: false,
-                searchable: false
-            },{
-                data: "penjualan_kode",
-                className: "",
-                orderable: true,
-                searchable: false
-            },{
-                data: "penjualan_tanggal",
-                className: "",
-                orderable: true,
-                searchable: false
-            },{
-                data: "user.nama",
-                className: "",
-                orderable: true,
-                searchable: true
-            },{
-                data: "pembeli",
-                className: "",
-                orderable: true,
-                searchable: true
-            },{
-                data: "aksi",
-                className: "text-center",
-                orderable: false,
-                searchable: false
-            }]
-        });
-
-        $('#table_penjualan_filter input').unbind().bind().on('keyup', function(e){
-            if(e.keyCode == 13){ // enter key
-                tablePenjualan.search(this.value).draw();
+    tablePenjualan = $('#table_penjualan').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": "{{ url('/penjualan/list') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": function (d) {
+                d.filter_user = $('.filter_user').val();
             }
-        });
+        },
+        columns: [{
+            data: "penjualan_id",
+            className: "text-center",
+            orderable: false,
+            searchable: false
+        },{
+            data: "penjualan_kode",
+            className: "",
+            orderable: true,
+            searchable: false
+        },{
+            data: "penjualan_tanggal",
+            className: "",
+            orderable: true,
+            searchable: false
+        },{
+            data: "user.nama",
+            className: "",
+            orderable: true,
+            searchable: true
+        },{
+            data: "pembeli",
+            className: "",
+            orderable: true,
+            searchable: true
+        },{
+            data: "aksi",
+            className: "text-center",
+            orderable: false,
+            searchable: false
+        }]
     });
+
+    // Event listener for filter dropdown
+    $('.filter_user').change(function() {
+        tablePenjualan.ajax.reload(); // Reload DataTable with the new filter
+    });
+});
 </script>
 @endpush

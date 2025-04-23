@@ -47,17 +47,19 @@
     </table>
 
     <div class="line"></div>
+
     <table>
-        @foreach($penjualan->penjualanDetail as $detail)
+        @foreach($penjualan->penjualan_detail as $detail)
             <tr>
                 <td colspan="2">{{ $detail->barang->barang_nama }}</td>
             </tr>
             <tr>
-                <td>{{ $detail->jumlah }} x {{ number_format($detail->harga,0,',','.') }}</td>
-                <td class="text-right">{{ number_format($detail->total,0,',','.') }}</td>
+                <td>{{ $detail->jumlah }} x {{ number_format($detail->harga, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($detail->jumlah * $detail->harga, 0, ',', '.') }}</td>
             </tr>
         @endforeach
     </table>
+
     <div class="line"></div>
 
     <table>
@@ -65,7 +67,9 @@
             <td><strong>Total</strong></td>
             <td class="text-right">
                 <strong>
-                    {{ number_format($penjualan->penjualanDetail->sum('total'),0,',','.') }}
+                    {{ number_format($penjualan->penjualan_detail->sum(function($item) {
+                        return $item->jumlah * $item->harga;
+                    }), 0, ',', '.') }}
                 </strong>
             </td>
         </tr>
@@ -75,5 +79,6 @@
         ~ Terima Kasih ~<br>
         Barang yang sudah dibeli tidak bisa dikembalikan.
     </div>
+
 </body>
 </html>
