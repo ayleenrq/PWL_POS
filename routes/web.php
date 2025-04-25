@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\DashboardController;
 
 Route::pattern('id', '[0-9]+'); // artinya ketika ada parameter {id}, maka harus berupa angka
 
@@ -151,7 +152,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::group(['prefix' => 'stok'], function () {
         Route::middleware(['authorize:ADM,MNG'])->group(function () {
             Route::get('/', [StokController::class, 'index']);          // menampilkan halaman awal stok
-            Route::post('/riwayat', [StokController::class, 'riwayatStok']);      // menampilkan data stok dalam bentuk json untuk datatables
+            Route::post('/list', [StokController::class, 'list']);      // menampilkan data stok dalam bentuk json untuk datatables
             Route::get('/create_ajax', [StokController::class, 'create_ajax']);   // menampilkan halaman form tambah stok
             Route::post('/ajax', [StokController::class, 'store_ajax']); // menyimpan data stok baru ajax
             Route::get('/{id}/show_ajax', [StokController::class, 'show_ajax']); // menampilkan halaman detail stok ajax

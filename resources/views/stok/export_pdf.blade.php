@@ -82,17 +82,19 @@
                 <th class="text-center">No</th> 
                 <th>Tanggal/Waktu</th> 
                 <th>Barang</th> 
+                <th>Jenis Stok</th> 
                 <th>Supplier</th> 
                 <th>User</th> 
                 <th class="text-right">Stok Jumlah</th> 
             </tr> 
         </thead> 
         <tbody> 
-            @foreach($riwayatStok as $r) 
+            @foreach($stok as $r) 
             <tr> 
                 <td class="text-center">{{ $loop->iteration }}</td> 
                 <td>{{ $r->tanggal }}</td> 
                 <td>{{ $r->barang->barang_nama }}</td> 
+                <td>{{ $r->jenis_stok }}</td> 
                 <td>{{ $r->supplier->supplier_nama }}</td> 
                 <td>{{ $r->user->nama }}</td> 
                 <td class="text-right">{{ number_format($r->stok_jumlah, 0, ',', '.') }}</td> 

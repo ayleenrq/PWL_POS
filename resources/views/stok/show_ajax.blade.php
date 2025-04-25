@@ -11,27 +11,31 @@
             <table class="table table-bordered table-striped table-hover table-sm"> 
                 <tr> 
                     <th>ID</th> 
-                    <td>{{ $riwayatstok->riwayat_stok_id }}</td> 
+                    <td>{{ $stok->stok_id }}</td> 
                 </tr> 
                 <tr> 
                     <th>Tanggal/Waktu</th> 
-                    <td>{{ $riwayatstok->tanggal }}</td> 
+                    <td>{{ $stok->tanggal }}</td> 
                 </tr> 
                 <tr> 
                     <th>Barang</th> 
-                    <td>{{ $riwayatstok->barang->barang_nama }}</td> 
+                    <td>{{ $stok->barang->barang_nama }}</td> 
+                </tr> 
+                <tr> 
+                    <th>Jenis Stok</th> 
+                    <td>{{ $stok->jenis_stok }}</td> 
                 </tr> 
                 <tr> 
                     <th>Supplier</th> 
-                    <td>{{ $riwayatstok->supplier->supplier_nama }}</td> 
+                    <td>{{ $stok->supplier->supplier_nama }}</td> 
                 </tr> 
                 <tr> 
                     <th>User</th> 
-                    <td>{{ $riwayatstok->user->nama }}</td> 
+                    <td>{{ $stok->user->nama }}</td> 
                 </tr> 
                 <tr> 
                     <th>Stok</th> 
-                    <td>{{ $riwayatstok->stok_jumlah }}</td> 
+                    <td>{{ $stok->stok_jumlah }}</td> 
                 </tr> 
             </table> 
             <button type="button" data-dismiss="modal" class="btn btn-default">Kembali</button>

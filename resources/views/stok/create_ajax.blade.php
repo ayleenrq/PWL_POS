@@ -11,12 +11,14 @@
         <div class="modal-body"> 
             <div class="form-group"> 
                 <label>Barang</label> 
-                <select name="barang_id" id="barang_id" class="form-control" required> 
-                    <option value="">- Pilih Barang -</option> 
-                    @foreach($barang as $b) 
-                        <option value="{{ $b->barang_id }}">{{ $b->barang_nama }}</option> 
-                    @endforeach 
-                </select> 
+                <select name="barang_id" class="form-control">
+                    <option value="">-- Pilih Barang --</option>
+                    @foreach($barang as $item)
+                        <option value="{{ $item->barang_id }}">
+                            {{ $item->barang_nama }}
+                        </option>
+                    @endforeach
+                </select>
                 <small id="error-barang_id" class="error-text form-text text-danger"></small> 
             </div> 
             <div class="form-group"> 

@@ -1,4 +1,4 @@
-@empty($riwayatstok) 
+@empty($stok) 
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content"> 
             <div class="modal-header"> 
@@ -16,7 +16,7 @@
         </div> 
     </div> 
 @else 
-    <form action="{{ url('/stok/' . $riwayatstok->riwayat_stok_id.'/update_ajax') }}" method="POST" id="form-edit"> 
+    <form action="{{ url('/stok/' . $stok->stok_id.'/update_ajax') }}" method="POST" id="form-edit"> 
     @csrf 
     @method('PUT') 
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
@@ -33,7 +33,7 @@
                     <select name="barang_id" id="barang_id" class="form-control" required> 
                         <option value="">- Pilih Barang -</option> 
                         @foreach($barangs as $b) 
-                            <option {{ ($b->barang_id == $riwayatstok->barang_id)? 'selected' : '' }} value="{{ $b->barang_id }}">{{ $b->barang_nama }}</option> 
+                            <option {{ ($b->barang_id == $stok->barang_id)? 'selected' : '' }} value="{{ $b->barang_id }}">{{ $b->barang_nama }}</option> 
                         @endforeach 
                     </select> 
                     <small id="error-barang_id" class="error-text form-text text-danger"></small> 
@@ -43,14 +43,14 @@
                     <select name="supplier_id" id="supplier_id" class="form-control" required> 
                         <option value="">- Pilih Supplier -</option> 
                         @foreach($suppliers as $s) 
-                            <option {{ ($s->supplier_id == $riwayatstok->supplier_id)? 'selected' : '' }} value="{{ $s->supplier_id }}">{{ $s->supplier_nama }}</option> 
+                            <option {{ ($s->supplier_id == $stok->supplier_id)? 'selected' : '' }} value="{{ $s->supplier_id }}">{{ $s->supplier_nama }}</option> 
                         @endforeach 
                     </select> 
                     <small id="error-supplier_id" class="error-text form-text text-danger"></small> 
                 </div> 
                 <div class="form-group"> 
                     <label>Stok Jumlah</label> 
-                    <input value="{{ $riwayatstok->stok_jumlah }}" type="number" name="stok_jumlah" id="stok_jumlah" class="form-control" required> 
+                    <input value="{{ $stok->stok_jumlah }}" type="number" name="stok_jumlah" id="stok_jumlah" class="form-control" required> 
                     <small id="error-stok_jumlah" class="error-text form-text text-danger"></small> 
                 </div> 
             </div> 
