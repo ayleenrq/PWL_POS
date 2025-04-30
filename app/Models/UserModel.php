@@ -11,6 +11,14 @@ class UserModel extends Authenticatable
 {
     use HasFactory;
 
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(){
+        return [];
+    }
+
     protected $table = 'm_user';
     protected $primaryKey = 'user_id';
     protected $fillable = ['username', 'password', 'nama', 'level_id', 'created_at', 'updated_at', 'profile_picture'];
