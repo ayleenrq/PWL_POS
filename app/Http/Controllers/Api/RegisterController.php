@@ -10,7 +10,7 @@ use App\Models\UserModel;
 
 class RegisterController extends Controller
 {
-    public function _invoke(Request $request){
+    public function __invoke(Request $request){
         //set validation
         $validator = Validator::make($request->all(), [
             'username' => 'required',
