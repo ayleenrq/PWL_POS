@@ -22,7 +22,10 @@ class RegisterController extends Controller
         
         //if validations fails
         if($validator->fails()){
-            return response()->json($validator->errors(), 422);
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
         }
 
         //create user
@@ -31,7 +34,7 @@ class RegisterController extends Controller
             'nama' => $request->nama,
             'password' => Hash::make($request->password),
             'level_id' => $request->level_id,
-            'image' => $request->image,
+            'image' => $request->image->hashName(), //update
         ]);
 
         //return response JSON user is created
